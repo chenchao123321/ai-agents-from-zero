@@ -39,8 +39,7 @@ ollama run qwen:4b
 - **模型搜索 / 模型库**：https://ollama.com/search
 - **源码仓库（GitHub）**：https://github.com/ollama/ollama
 - **Ollama 官方文档**：
-  - https://ollama.com/docs （英文）
-  - https://ollama.com/zh-CN/docs （中文）
+  - https://docs.ollama.com/
 - **LangChain 与 Ollama 集成文档**：
   - https://docs.langchain.com/oss/python/integrations/chat/ollama （英文）
   - https://docs.langchain.org.cn/oss/python/integrations/chat/ollama （中文）

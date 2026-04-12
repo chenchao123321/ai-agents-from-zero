@@ -113,7 +113,7 @@ python 案例与源码-2-LangChain框架/01-helloworld/LangChainV1.0.py
 | **OpenRouter** | [平台](https://openrouter.ai/)                         | [API-Key](https://openrouter.ai/settings/keys)                      | [文档](https://openrouter.ai/docs/community/frameworks-and-integrations-overview) | [模型](https://openrouter.ai/models)                                         | 多模型统一聚合平台，适合做“一个入口接多家模型”     |
 | **硅基流动**   | [平台](https://www.siliconflow.cn/)                    | [API-Key](https://cloud.siliconflow.cn/me/account/ak)               | [文档](https://docs.siliconflow.cn/cn/userguide/capabilities/text-generation)     | [模型](https://cloud.siliconflow.cn/me/models)                               | 国内常见 AI API 平台，适合练手与接入开源模型       |
 | **百度千帆**   | [平台](https://console.bce.baidu.com/qianfan/overview) | [API-Key](https://console.bce.baidu.com/qianfan/ais/console/apiKey) | [文档](https://cloud.baidu.com/doc/qianfan-docs/s/Mm8r1mejk)                      | [模型](https://console.bce.baidu.com/qianfan/modelcenter/model/buildIn/list) | 百度系模型平台                                     |
-| **CloseAI**    | [平台](https://platform.closeai-asia.com/)             | [API-Key](https://platform.closeai-asia.com/developer/api)          | [文档](https://doc.closeai-asia.com/tutorial/api/openai.html)                     | [模型](https://platform.closeai-asia.com/pricing)                            | OpenAI / 国际模型兼容接入平台之一                  |
+| **CloseAI**    | [平台](https://platform.closeai-asia.com/)             | [API-Key](https://platform.closeai-asia.com/)                       | [文档](https://doc.closeai-asia.com/tutorial/api/openai.html)                     | [模型](https://doc.closeai-asia.com/)                                        | OpenAI / 国际模型兼容接入平台之一                  |
 
 ---
 
