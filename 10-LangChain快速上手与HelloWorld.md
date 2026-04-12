@@ -485,6 +485,5 @@ for chunk in model.stream("请介绍一下 LangGraph"):
 - **HelloWorld 的本质**不是“写一个很简单的例子”，而是验证整条调用链是否打通。对 LangChain 来说，这条最小链路就是：**准备 API Key、模型名、Base URL → 初始化模型 → `invoke()` 调用 → `.content` 取回复**。
 - 本章建议按 **LangChain 1.x** 语境学习，并遵循本项目当前环境约定：**Python 3.10–3.13，推荐 3.10**。如果是跟着本仓库学，优先执行 `pip install -r requirements.txt`；如果只想跑本章最小案例，至少安装 `langchain`、`langchain-openai`、`openai`、`python-dotenv`、`langchain-core`，运行 DeepSeek 多模型案例时建议补 `langchain-deepseek`。
 - 本章保留的全部案例，分别对应了不同学习目标：`GetEnvInfo.py` 用于**检查环境**，`LangChainV0.3.py` 与 `LangChainV1.0.py` 用于理解 **经典写法与 1.x 写法**，`LangChain_MoreV1.0.py` 用于掌握 **多模型共存**，`StandardDesc.py` 则让你迈出从“教学 Demo”走向“工程化写法”的第一步。
-- 从掌握结果看，学完本章后，你至少应该：知道 LangChain 第一次调用要打通哪条最小链路：**API Key → 模型名 → Base URL → 初始化模型 → `invoke()` → 读取 `.content`**；能区分“教学 Demo 跑通”和“工程化可复用”的差别，理解为什么后面要做环境变量校验、封装、日志与流式输出；能看懂 **0.x / 经典写法** 与 **1.x 推荐写法** 的区别，知道学习主线应以 1.x 为主。
 
 **建议下一步：** 先亲手跑通本章至少两个脚本，推荐顺序是：`GetEnvInfo.py` → `LangChainV1.0.py` → `LangChain_MoreV1.0.py` → `StandardDesc.py`。跑通之后，马上进入 [第 11 章 Model I/O 与模型接入](11-Model-I-O与模型接入.md)，把这章中“会用”的部分升级成“真正理解为什么这样接、不同模型如何统一接入”。等你再接着学 [第 13 章 提示词与消息模板](13-提示词与消息模板.md) 和 [第 14 章 输出解析器](14-输出解析器.md)，就能形成完整的 **输入 → 模型 → 输出** 学习闭环。

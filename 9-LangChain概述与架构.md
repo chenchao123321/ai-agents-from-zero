@@ -607,6 +607,5 @@ Model I/O 可以理解为“**围绕模型调用本身的一圈能力**”。它
 - **LangChain** 不是大模型本身，而是位于 AI 应用架构中“**服务 / 编排层**”的开源框架，核心作用是把模型、Prompt、知识、工具、记忆、输出解析和调试能力组织成一个可维护的应用系统。它与 **Coze / Dify** 的关系不是替代，而是分工不同：前者偏代码框架，后者偏低代码平台；真实项目里常常先用平台验证，再用框架落地。
 - 2026年，学习 LangChain 应以 **1.x 官方文档**为主线。要重点理解：`langchain` 主包已精简，很多旧能力迁移到了 `langchain-classic`；Agent 以 `create_agent` 为高层入口，底层建立在 **LangGraph** 之上；集成能力则通过 `langchain-openai`、`langchain-ollama` 等独立 provider 包扩展。
 - 对初学者来说，最重要的不是一开始记住所有 API，而是先建立 **六块认知地图**：**Model I/O、Chains、Memory、Retrieval、Tools / Agents、Callbacks**。后续章节会按这张地图一块一块展开，并且已经在项目目录中配好了对应案例源码。
-- 从掌握结果看，学完本章后，你至少应该：能说清 LangChain 在 AI 应用架构里的位置：它是编排层，不是模型本身；能区分 LangChain、LangGraph、provider 包、低代码平台在真实项目里的分工；能用自己的话讲出六大模块分别解决什么问题，以及后续章节为什么按这个顺序展开。
 
 **建议下一步：** 直接进入 [第 10 章 LangChain 快速上手与 HelloWorld](10-LangChain快速上手与HelloWorld.md)，先把 **API Key、模型名、Base URL、HelloWorld 调用、多模型共存、企业级封装与流式输出** 跑通。等你真正把第一个 LangChain 调用写出来，再回头看这一章的“定位、架构、模块”，理解会明显更扎实。

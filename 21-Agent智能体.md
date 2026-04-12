@@ -341,7 +341,7 @@ from langchain.agents import create_agent
 - **显式 `ProviderStrategy(schema)`**：当底层模型原生支持结构化输出时，更贴近 provider 原生能力。
 - **显式 `ToolStrategy(schema)`**：把结构化输出当成一次工具调用式约束，兼容性通常更好。
 
-对初学者来说，你先记住一句话就够了：**`response_format` 不是“把字符串转 JSON”的后处理，而是在 Agent 最终输出阶段，把“结果长什么样”提前约束清楚。**
+对初学者来说，可先把握一个基本判断：**`response_format` 不是“把字符串转 JSON”的后处理，而是在 Agent 最终输出阶段，把“结果长什么样”提前约束清楚。**
 
 ### 4.4 checkpointer、thread_id 与短期记忆
 
@@ -613,6 +613,5 @@ Agent 的问题，往往不是“有没有报错”这么简单，而是：
 - **LangChain 1.x 的主线要抓住三个工程点**：`response_format` 负责把最终输出结构化，`checkpointer` 负责线程状态持久化，`thread_id` 负责多轮对话和会话隔离。它们共同决定 Agent 能不能从“演示能跑”走向“系统可用”。
 - **什么时候不该上 Agent 也要明确**：如果步骤固定、路径稳定、可控性要求高，优先用 LCEL 或 Workflow；只有当任务真的需要动态选工具、临场分解步骤、边执行边调整时，Agent 才值得它带来的复杂度。
 - **可上线的 Agent，重点在边界而不只是能力**：工具白名单、参数校验、人审或二次确认、超时重试、日志与状态持久化，往往比“再多接几个 Tool”更重要。
-- 从掌握结果看，学完本章后，你至少应该：能用“**Agent = 决策层**”概括 Agent 的定位，并把它和 Tool、RAG、MCP、Workflow 分层理解；知道 LangChain Agent 的两条主线：**classic 路线** 和 **`create_agent` + LangGraph runtime 路线**；理解 `response_format`、`checkpointer`、`thread_id` 这些 1.x 时代很关键的工程化能力，并知道什么时候该用 Agent、什么时候不该用。
 
 **建议下一步：** 在本地依次运行 `AgentSmartSelectV0.3.py`、`AgentSmartSelectV1.0.py`、`AgentReact.py` 和 `Agent2Agent.py`，对照文档理解 [Tool](17-Tools工具调用.md)、Agent、AgentExecutor 的配合；若需进一步把外部能力接入 Agent，再回看 [第 20 章 MCP 模型上下文协议](20-MCP模型上下文协议.md) 中的 `McpClientAgent.py`，把本章和 MCP 主线串起来。链式固定流程与 Agent 的取舍可对照 [第 15 章 LCEL 与链式调用](15-LCEL与链式调用.md) 与本文 **1.4 Agent 的使用场景** 一节。
