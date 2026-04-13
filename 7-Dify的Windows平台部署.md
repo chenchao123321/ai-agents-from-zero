@@ -88,7 +88,7 @@ Windows 本地部署 Dify，核心依赖只有两个：
 
 ![Docker Desktop 跳过新手引导的界面](images/7/7-2-4-5.png)
 
-> 如果 Windows 提示需要安装 WSL（Windows Subsystem for Linux），直接按提示完成即可。对初学者来说，不必把 WSL 理解得太深，只需要知道：**Docker Desktop 在 Windows 上通常需要借助 WSL 2 提供 Linux 运行环境。**
+> 如果 Windows 提示需要安装 WSL（Windows Subsystem for Linux），直接按提示完成即可。在入门阶段，不必把 WSL 理解得太深，只需要知道：**Docker Desktop 在 Windows 上通常需要借助 WSL 2 提供 Linux 运行环境。**
 
 ### 2.5 验证 Docker 是否安装成功
 
@@ -119,7 +119,7 @@ https://github.com/langgenius/Dify
 
 ![获取 Dify 项目代码的课程资料界面](images/7/7-3-1-1.png)
 
-对初学者来说，这一步只需要记住一件事：
+这一步只需要记住一件事：
 
 > **你后面真正操作的目录，不是仓库根目录，而是仓库里的 `docker` 目录。**
 
@@ -221,7 +221,7 @@ docker compose up -d
 **本章小结：**
 
 - **部署主线**：Dify 的 Windows 本地部署可以浓缩成一条很清晰的链路：**装 Docker -> 获取 Dify -> 配置 `.env` -> `docker compose up -d` -> 浏览器访问**。
-- **排障重点**：初学者最常见的问题通常不是 Dify 本身，而是 Docker / WSL、端口占用、镜像拉取和配置文件处理。
+- **排障重点**：最常见的问题通常不是 Dify 本身，而是 Docker / WSL、端口占用、镜像拉取和配置文件处理。
 - **课程位置**：这章的意义不只是把 Dify 跑起来，更是帮你为后面的私有化、企业部署和 Docker 排障打基础。
 - 从掌握结果看，学完本章后，你至少应该：能在 Windows 上正确安装 Docker Desktop，并知道 WSL 提示出现时该怎么处理；能完成 Dify 的最小本地部署：获取代码、修改 `.env`、执行 `docker compose up -d`、浏览器访问；能理解端口冲突、镜像拉取失败、容器状态异常这些常见部署问题的大致排查方向。
 
