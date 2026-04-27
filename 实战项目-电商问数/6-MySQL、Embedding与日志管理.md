@@ -128,7 +128,7 @@ BAAI/bge-large-zh-v1.5
 
 ### 1.6 封装 Embedding 客户端
 
-项目对应文件路径：`shopkeeper-agent-backend/app/clients/embedding_client_manager.py`
+项目对应文件路径：`shopkeeper-agent/app/clients/embedding_client_manager.py`
 
 代码如下：
 
@@ -180,7 +180,7 @@ if __name__ == "__main__":
 执行文件验证，成功：
 
 ```bash
-(shopkeeper-agent-backend) didilili@DidililiMacBook-Pro shopkeeper-agent-backend % python3 -m app.clients.embedding_client_manager
+(shopkeeper-agent) didilili@DidililiMacBook-Pro shopkeeper-agent % python3 -m app.clients.embedding_client_manager
 
 [-0.005919582676142454, 0.005813124123960733, 0.018300632014870644]
 
@@ -422,7 +422,7 @@ for user in session.scalars(stmt):
 
 ### 2.4 封装 MySQL 客户端
 
-项目对应文件路径：`shopkeeper-agent-backend/app/clients/mysql_client_manager.py`
+项目对应文件路径：`shopkeeper-agent/app/clients/mysql_client_manager.py`
 
 这一部分的中心代码就是当前项目里的 MySQL 客户端封装。前面的 `SQLAlchemy` 基础、quickstart、Engine 与 Session，最终都是为了帮助我们把这段代码看懂。
 
@@ -501,7 +501,7 @@ if __name__ == "__main__":
 执行文件验证，成功：
 
 ```bash
-(shopkeeper-agent-backend) didilili@DidililiMacBook-Pro shopkeeper-agent-backend % python3 -m app.clients.mysql_client_manager
+(shopkeeper-agent) didilili@DidililiMacBook-Pro shopkeeper-agent % python3 -m app.clients.mysql_client_manager
 <class 'list'>
 <class 'sqlalchemy.engine.row.RowMapping'>
 ORD20250101001
@@ -691,7 +691,7 @@ logger.error("error")
 
 ### 3.3 配置文件中的日志描述
 
-项目对应文件路径：`shopkeeper-agent-backend/conf/app_config.yaml`
+项目对应文件路径：`shopkeeper-agent/conf/app_config.yaml`
 
 对应配置如下：
 
@@ -728,7 +728,7 @@ logging:
 
 ### 3.4 封装日志配置
 
-项目对应文件路径：`shopkeeper-agent-backend/app/core/log.py`
+项目对应文件路径：`shopkeeper-agent/app/core/log.py`
 
 代码如下：
 
@@ -854,7 +854,7 @@ log_format = (
 
 #### 3.4.4 request_id 注入机制
 
-项目文件路径：`shopkeeper-agent-backend/app/core/context.py`
+项目文件路径：`shopkeeper-agent/app/core/context.py`
 
 ```python
 from contextvars import ContextVar
