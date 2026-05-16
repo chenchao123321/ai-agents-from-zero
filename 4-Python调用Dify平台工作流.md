@@ -466,4 +466,4 @@ print(final_text[:300])
 
 - 如果你还要继续接 Coze 平台工作流，进入 [第 5 章 Python 调用 Coze 平台工作流](5-Python调用Coze平台工作流.md)。
 - 如果你想把平台能力和 Agent 原理连接起来，进入 [第 21 章 Agent 智能体](21-Agent智能体.md)。
-- 如果你准备部署自己的 Dify 环境，进入 [第 7 章 Dify 的 Windows 平台部署](7-Dify的Windows平台部署.md) 或 [第 8 章 企业级大模型部署](8-企业级大模型部署.md)。
+- 如果你准备部署自己的 Dify 环境，进入 [第 6 章 Dify 的安装和启动](6-Coze与Dify的Windows平台部署.md#_4、dify-的安装和启动) 或 [第 7 章 企业级大模型部署](7-企业级大模型部署.md)。

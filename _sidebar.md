@@ -17,10 +17,9 @@
   - 智能体的调用与部署
     - [第 4 章 Python 调用 Dify 平台工作流](4-Python调用Dify平台工作流.md)
     - [第 5 章 Python 调用 Coze 平台工作流](5-Python调用Coze平台工作流.md)
-    - [第 6 章 Coze 的 Windows 平台部署](6-Coze的Windows平台部署.md)
-    - [第 7 章 Dify 的 Windows 平台部署](7-Dify的Windows平台部署.md)
-    - [第 8 章 企业级大模型部署](8-企业级大模型部署.md)
-    - [第 8.1 章 Docker 入门与 Dify 部署常见问题](8.1-Docker入门与Dify部署常见问题.md)
+    - [第 6 章 Coze 与 Dify 的 Windows 平台部署](6-Coze与Dify的Windows平台部署.md)
+    - [第 7 章 企业级大模型部署](7-企业级大模型部署.md)
+    - [第 8 章 Docker 入门与 Dify 部署常见问题](8-Docker入门与Dify部署常见问题.md)
   - 工作流智能体案例与源码
     - [1 一键生成行业调研 PPT（Coze)](案例与源码-1-Coze&Dify工作流智能体/3.1-Coze案例：一键生成行业调研PPT/3.1-一键生成行业调研PPT.md)
     - [2 复刻爆款视频（Coze)](案例与源码-1-Coze&Dify工作流智能体/3.2-Coze案例：复刻爆款视频/3.2-复刻爆款视频.md)
