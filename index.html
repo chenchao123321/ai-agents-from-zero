@@ -376,7 +376,15 @@
     <script>
       (function () {
         var isGitHubPages = /github\.io$/i.test(location.hostname);
-        var mermaidIndex = 0;
+        function escapeHtml(value) {
+          return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
         var config = {
           name: "AI 智能体实战速成指南",
           repo: "https://github.com/didilili/ai-agents-from-zero",
@@ -493,11 +501,7 @@
                   typeof token === "string" ? maybeLang : token && token.lang;
 
                 if (lang === "mermaid") {
-                  return (
-                    '<div class="mermaid">' +
-                    mermaid.render("mermaid-svg-" + mermaidIndex++, text) +
-                    "</div>"
-                  );
+                  return '<div class="mermaid">' + escapeHtml(text) + "</div>";
                 }
                 return this.origin.code.apply(this, arguments);
               },
@@ -524,7 +528,7 @@
         window.$docsify = config;
       })();
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.3.0/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.6/dist/mermaid.min.js"></script>
     <script>
       mermaid.initialize({ startOnLoad: false });
     </script>
