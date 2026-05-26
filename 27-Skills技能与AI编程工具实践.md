@@ -128,7 +128,7 @@ AI 编程助手也是类似的：
 └─ 技能 4：技术文档改写
 ```
 
-这说明一个很重要的认知：**Skill 不是 Agent 的替代品，而是 Agent 的能力组织方式。**
+这里要形成一个关键判断：**Skill 不是 Agent 的替代品，而是 Agent 的能力组织方式。**
 
 ---
 
@@ -243,7 +243,7 @@ code-reviewer/
 
 ![Skill 扩展目录结构：code-reviewer 技能包由 SKILL.md、requirements.txt、references、scripts 与 assets 组成，并由 Agent 按需加载](images/27/27-3-4-1.png)
 
-可以这样理解：
+各目录职责如下：
 
 | 路径               | 作用                           |
 | ------------------ | ------------------------------ |
@@ -660,29 +660,39 @@ DeepAgents 的 Skills 更偏框架能力。它会从指定目录读取 `SKILL.md
 在 DeepAgents 里，常见配置思路是：
 
 ```python
+from pathlib import Path
+
 from deepagents import create_deep_agent
-from deepagents.backends import FilesystemBackend
+from deepagents.backends.filesystem import FilesystemBackend
+
+current_dir = Path(__file__).parent
 
 backend = FilesystemBackend(
-    root_dir=current_dir,
+    root_dir=str(current_dir),
     virtual_mode=True,
 )
 
 agent = create_deep_agent(
     model=llm,
     backend=backend,
-    skills=["skills"],
+    skills=[str(current_dir / "skills")],
     system_prompt="你是一个可以按需使用 Skills 的智能助手。",
 )
 ```
 
 这里要分清三个路径：
 
-| 概念           | 示例                | 说明                                         |
-| -------------- | ------------------- | -------------------------------------------- |
-| 物理路径       | `base/skills/`      | 本地磁盘上真正存放 Skill 的目录              |
-| Backend 根目录 | `base/`             | `FilesystemBackend(root_dir=...)` 指向的位置 |
-| Agent 配置路径 | `skills=["skills"]` | 相对于 Backend 根目录的 Skill 目录           |
+| 概念           | 示例                            | 说明                                         |
+| -------------- | ------------------------------- | -------------------------------------------- |
+| 物理路径       | `base/skills/`                  | 本地磁盘上真正存放 Skill 的目录              |
+| Backend 根目录 | `base/`                         | `FilesystemBackend(root_dir=...)` 指向的位置 |
+| Agent 配置路径 | `skills=[str(base / "skills")]` | 传给 `create_deep_agent` 的 Skill 目录来源   |
+
+DeepAgents 的 Skills 还要注意三个边界：
+
+- `SKILL.md` 不适合写得特别长。大段参考资料、模板和案例，优先放到 `references/`、`assets/` 这类目录里，再在正文中说明什么时候读取。
+- 如果配置了多个 Skill 来源，名称重复时通常会出现优先级问题。团队里应尽量避免同名 Skill，或者明确覆盖关系。
+- 自定义 Subagent 不一定自动继承主 Agent 的 Skills。需要子 Agent 使用的技能，要在它自己的配置里显式声明。
 
 LangChain 里也可以用更通用的方式实现 Skills：给 Agent 一个 `load_skill` 工具，先把技能描述注入系统提示词，等模型判断需要时再调用工具加载完整内容。这和渐进式披露思想是一致的。
 

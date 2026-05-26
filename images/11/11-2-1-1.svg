@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">模型名、模型平台、LangChain 模型对象与 AIMessage 返回对象的关系</title>
+  <desc id="desc">从模型本身到模型提供商，再到 LangChain 模型对象，最后返回 AIMessage 的分层关系。</desc>
+  <rect width="1200" height="520" fill="#f8fafc"/>
+  <text x="600" y="54" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#0f172a">模型接入时先分清四层对象</text>
+  <text x="600" y="92" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#475569">换模型、换平台、换代码写法、读取返回值，不是同一件事</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2563eb"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <rect x="55" y="150" width="235" height="230" rx="18" fill="#ffffff" stroke="#bfdbfe" stroke-width="2"/>
+    <rect x="335" y="150" width="235" height="230" rx="18" fill="#ffffff" stroke="#bbf7d0" stroke-width="2"/>
+    <rect x="615" y="150" width="235" height="230" rx="18" fill="#ffffff" stroke="#ddd6fe" stroke-width="2"/>
+    <rect x="895" y="150" width="235" height="230" rx="18" fill="#ffffff" stroke="#fecdd3" stroke-width="2"/>
+  </g>
+
+  <text x="172" y="197" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#1d4ed8">模型本身</text>
+  <text x="172" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">真正提供能力</text>
+  <text x="172" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#0f172a">qwen-plus</text>
+  <text x="172" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#0f172a">deepseek-chat</text>
+  <text x="172" y="341" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#0f172a">llama3.1</text>
+
+  <text x="452" y="197" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#15803d">提供商 / 平台</text>
+  <text x="452" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">负责 API 与鉴权</text>
+  <text x="452" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#0f172a">阿里百炼</text>
+  <text x="452" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#0f172a">DeepSeek</text>
+  <text x="452" y="341" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#0f172a">Ollama</text>
+
+  <text x="732" y="197" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#6d28d9">模型对象</text>
+  <text x="732" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">代码里的调用入口</text>
+  <text x="732" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#0f172a">init_chat_model</text>
+  <text x="732" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#0f172a">ChatOpenAI</text>
+  <text x="732" y="341" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#0f172a">ChatOllama</text>
+
+  <text x="1012" y="197" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#be123c">返回对象</text>
+  <text x="1012" y="236" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">模型调用结果</text>
+  <text x="1012" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#0f172a">AIMessage</text>
+  <text x="1012" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#0f172a">content</text>
+  <text x="1012" y="341" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#0f172a">metadata</text>
+
+  <line x1="300" y1="265" x2="325" y2="265" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="580" y1="265" x2="605" y2="265" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="860" y1="265" x2="885" y2="265" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="150" y="420" width="900" height="48" rx="24" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="600" y="451" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#1e3a8a">项目里排查问题时，先判断到底是模型能力、平台配置、LangChain 封装，还是返回字段读取出了问题</text>
+</svg>

@@ -142,7 +142,7 @@ LangGraph 官方现在主要有两套写法：**Graph API** 和 **Functional API
 - **Graph API**：把流程显式写成 **State + Nodes + Edges + Graph**。优点是结构清楚、适合画图、适合教学，也更容易帮助你理解状态怎么在节点之间流动。
 - **Functional API**：用 `@entrypoint` / `@task` 这类函数式写法组织流程，更接近“在一个函数里编排任务”。优点是对已有 Python 代码的改造成本可能更低，但在入门阶段，流程结构不如显式图那么直观。
 
-**本教程第 22～26 章主线先采用 Graph API。** 原因很简单：如果你先把“状态、节点、边、图”这套显式结构建立起来，后面学习条件边、子图、持久化、多人协作会更顺。Functional API 不是不重要，只是更适合在你已经理解 LangGraph 核心思想后，再作为另一种写法补充学习。
+**本教程第 22～26 章主线先采用 Graph API。** 先把“状态、节点、边、图”这套显式结构建立起来，后面学习条件边、子图、持久化、多智能体协作会更顺。Functional API 不是不重要，只是更适合在你已经理解 LangGraph 核心思想后，再作为另一种写法补充学习。
 
 ![Quickstart 关键步骤示意：官方提供 Graph API 与 Functional API 两种方式，图中红框突出 Graph API（本教程采用）](images/22/22-2-1-1.jpeg)
 
@@ -197,7 +197,7 @@ print(result)
 
 这里有一个值得提前知道的小细节：`compile()` 之后得到的 app，才是真正可运行的图应用对象。图必须先编译后才能使用；编译这一步除了生成可执行对象，还会做一些基础结构检查，并为后面的持久化、中断恢复等运行时能力留出接入位置。入门阶段先把它理解成“**先搭图，再编译，最后才能运行**”就够了。
 
-也就是说，LangGraph 不是按你写代码的文本顺序一行行执行节点。你先写出业务逻辑图，`compile()` 再把它交给运行时调度；运行时会根据节点、边、状态通道和配置决定每一步该执行哪些节点。第 23 章讲 State 和 Reducer 时，我们会继续把这件事拆开看。
+换句话说，LangGraph 不是按你写代码的文本顺序一行行执行节点。你先写出业务逻辑图，`compile()` 再把它交给运行时调度；运行时会根据节点、边、状态通道和配置决定每一步该执行哪些节点。第 23 章讲 State 和 Reducer 时，我们会继续把这件事拆开看。
 
 ### 2.4 图结构可视化
 
@@ -272,7 +272,7 @@ print(f"图片已生成：{output_path}")
 messages: Annotated[List, add_messages]
 ```
 
-它的含义是：`messages` 这个字段不是简单覆盖，而是按“追加消息”的规则合并。也就是说，节点里只需要返回“这一轮新增的一条 AI 回复”，LangGraph 会自动把它追加到已有消息列表后面。对于多轮对话、Agent 执行轨迹、人机修正，这种状态更新方式非常重要。
+它的含义是：`messages` 这个字段不是简单覆盖，而是按“追加消息”的规则合并。节点里只需要返回“这一轮新增的一条 AI 回复”，LangGraph 会自动把它追加到已有消息列表后面。对于多轮对话、Agent 执行轨迹、人机修正，这种状态更新方式很关键。
 
 **这个案例重点看什么：**
 
@@ -379,6 +379,6 @@ print(graph.get_graph().print_ascii())
 - **LangChain 和 LangGraph 是配合关系**：LangChain 更擅长提供模型、Prompt、Tools、RAG、Agent 等组件和高层封装；LangGraph 更擅长做流程编排、状态管理、持久化、可观测和人机协作。
 - **Graph API 入门先记四个词**：State、Nodes、Edges、Graph；再记五步法：定义状态、写节点、连边、编译、执行。
 - **本章三个案例是递进关系**：`LangGraphHello.py` 先理解最小图，`LangGraphBiz.py` 理解业务状态流，`LangGraphLLM.py` 再把聊天模型和 `add_messages` 接进图里。
-- 从掌握结果看，学完本章后，你至少应该：能用“**图 + 状态**”概括 LangGraph 的核心思想，而不是把它理解成“把流程画出来”；知道 **Graph API** 和 **Functional API** 的区别，并理解为什么本教程先走 Graph API 主线；能记住 LangGraph 最小落地五步：**定义状态 → 写节点 → 连边 → 编译 → 执行**。
+- 学完本章后，你至少应该能做到三件事：用“**图 + 状态**”概括 LangGraph 的核心思想，而不是把它理解成“把流程画出来”；说清 **Graph API** 和 **Functional API** 的区别，并理解为什么本教程先走 Graph API 主线；记住 LangGraph 最小落地五步：**定义状态 → 写节点 → 连边 → 编译 → 执行**。
 
 **建议下一步：** 先在本地把 `案例与源码-3-LangGraph框架/01-helloworld` 这 3 个脚本都跑一遍，然后做两个小改造：给 `LangGraphBiz.py` 再加一个乘法节点；给 `LangGraphLLM.py` 多传一轮历史消息，观察 `messages` 列表是怎么增长的。做完之后，再进入 [第 23 章 - LangGraph API：图与状态](23-LangGraphAPI：图与状态.md)，系统学习 State Schema 和 Reducer。

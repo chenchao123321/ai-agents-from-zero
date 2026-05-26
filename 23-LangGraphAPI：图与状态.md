@@ -96,7 +96,7 @@
 
 在 LangGraph 中，**State（状态）** 是贯穿整张图执行过程的一份**共享数据快照**。每个节点都会接收当前 State，执行自己的逻辑，然后返回一份“状态更新”；LangGraph 再根据每个字段对应的 **Reducer（规约函数）**，把这份更新合并回全局 State。
 
-所以在入门阶段，最值得先记住的是这句话：
+入门阶段先抓住这句话：
 
 **State = Schema（模式） + Reducer（规约函数）**
 
@@ -174,7 +174,7 @@
 
 ### 2.5 案例：输入输出隔离
 
-这个案例就是在演示 2.4 这件事：**调用方只需要传 `question`，最终只拿到 `answer`；至于图内部是不是还保留了别的字段，那是内部实现细节，不一定要暴露出去。**
+这个案例对应 2.4 里的输入输出隔离：**调用方只需要传 `question`，最终只拿到 `answer`；至于图内部是不是还保留了别的字段，那是内部实现细节，不一定要暴露出去。**
 
 **这个案例重点看什么：**
 
@@ -242,7 +242,7 @@ flowchart LR
     reducer -->|latest_answer| cover["默认覆盖<br/>保留最新值"]
 ```
 
-这段定义可以这样理解：
+按字段来看：
 
 - `messages` 用 `add_messages` 合并，适合聊天历史这种“新增消息追加到列表里”的场景。
 - `tags` 和 `count` 用 `operator.add`，分别表示列表拼接和数值累加。
@@ -250,7 +250,7 @@ flowchart LR
 
 ### 3.2 案例一：默认覆盖更新
 
-如果一个字段没有写 `Annotated[..., reducer]`，默认就是**覆盖更新**。这个行为本身没问题，反而非常适合“这个字段永远只关心最新值”的场景，比如 `current_step`、`latest_answer`、`final_summary`。
+如果一个字段没有写 `Annotated[..., reducer]`，默认就是**覆盖更新**。这个行为本身没问题，适合“这个字段永远只关心最新值”的场景，比如 `current_step`、`latest_answer`、`final_summary`。
 
 这个案例里，`node1` 先把 `foo` 改成 `22`，`node2` 再把 `bar` 改成新列表。因为 `foo`、`bar` 都没声明特殊 Reducer，所以它们都是按默认覆盖规则更新。
 
@@ -268,7 +268,7 @@ flowchart LR
 
 [StateReducer_AddMessages.py](案例与源码-3-LangGraph框架/03-state/reducers/StateReducer_AddMessages.py ":include :type=code")
 
-这个案例还有一个细节很值得记住：调用 `graph.invoke(...)` 时，`messages` 里既可以传 `HumanMessage(...)` 这种对象，也可以传 `{"role": "...", "content": "..."}` 这类字典格式；如果 State 上用了 `add_messages`，运行时会尽量把它们转换成 LangChain Message 对象。因此，在节点里读正文时，通常应该用 `state["messages"][-1].content`，而不是把最后一条消息当普通字符串。
+这个案例还有一个细节需要注意：调用 `graph.invoke(...)` 时，`messages` 里既可以传 `HumanMessage(...)` 这种对象，也可以传 `{"role": "...", "content": "..."}` 这类字典格式；如果 State 上用了 `add_messages`，运行时会尽量把它们转换成 LangChain Message 对象。因此，在节点里读正文时，通常应该用 `state["messages"][-1].content`，而不是把最后一条消息当普通字符串。
 
 ### 3.4 案例三：operator.add 用在列表、字符串、数值上
 
@@ -306,7 +306,7 @@ flowchart LR
 
 这个案例不要只看“代码能不能跑”，要重点理解**为什么结果会变成 0.0**。对带 Reducer 的字段来说，LangGraph 合并更新时会经过“旧值 + 新值”的规约过程；当字段类型是 `float` 且用 `operator.mul` 做乘法规约时，如果初始旧值是 `0.0`，第一次就会变成 `0.0 * update = 0.0`，后面再乘什么都还是 0.0。
 
-所以这个案例真正想提醒你的不是“`operator.mul` 永远不能用”，而是：**乘法这类对单位元敏感的规约逻辑，不能只看 reducer 函数本身，还要认真处理初始值和首次合并边界。** 在真实项目里，如果这类边界不好直接靠内置函数表达，就应该写自定义 Reducer。
+所以这个案例真正想说明的不是“`operator.mul` 永远不能用”，而是：**乘法这类对单位元敏感的规约逻辑，不能只看 reducer 函数本身，还要处理好初始值和首次合并边界。** 在真实项目里，如果这类边界不好直接靠内置函数表达，就应该写自定义 Reducer。
 
 【案例源码】`案例与源码-3-LangGraph框架/03-state/reducers/StateReducer_OperatorMul.py`
 
@@ -321,7 +321,7 @@ def my_reducer(current_value, update_value):
     return merged_value
 ```
 
-也就是说，**Reducer 拿到的是当前旧值和本次节点更新值，返回的是合并后的新值。**
+换句话说，**Reducer 拿到的是当前旧值和本次节点更新值，返回的是合并后的新值。**
 
 这个案例用 `MyOperatorMul(current, update)` 专门处理乘法第一次规约时 `current == 0.0` 的问题：如果判断这是第一次合并，就把它当作从乘法单位元 `1.0` 开始；否则正常做 `current * update`。
 
@@ -339,7 +339,7 @@ def my_reducer(current_value, update_value):
 - `tags: Annotated[List[str], operator.add]`：标签列表拼接。
 - `score: Annotated[float, operator.add]`：数值分数累加。
 
-同时它还演示了一个很有实际价值的结构：**从 `START` 同时连到多个节点，让多个分支分别产出不同状态更新，最后由各字段自己的 Reducer 负责合并。** 这正是后面学习并行分支、复杂 Agent 图时很重要的基础。
+同时它还演示了一种常见结构：**从 `START` 同时连到多个节点，让多个分支分别产出不同状态更新，最后由各字段自己的 Reducer 负责合并。** 这是后面学习并行分支和复杂 Agent 图的基础。
 
 【案例源码】`案例与源码-3-LangGraph框架/03-state/reducers/StateReducersMyChatBot.py`
 
@@ -363,7 +363,8 @@ def my_reducer(current_value, update_value):
 
 - **不要把所有字段都默认覆盖，也不要把所有列表都直接套 `operator.add`。** 先问清楚这个字段的业务语义：是“最新值”，还是“历史累积”，还是“需要按 ID 合并”。
 - **消息历史优先考虑 `add_messages`，而不是普通列表相加。** 因为聊天消息往往涉及消息对象格式转换、按 ID 更新旧消息、人机介入修正等问题。
-- **自定义 Reducer 里一定要认真处理首次合并、空值、重复值、顺序稳定性这些边界。** 很多状态 bug 不是节点逻辑错了，而是 Reducer 合并规则没设计清楚。
+- **自定义 Reducer 里要处理好首次合并、空值、重复值、顺序稳定性这些边界。** 很多状态 bug 不是节点逻辑错了，而是 Reducer 合并规则没设计清楚。
+- **并行分支写同一个字符串字段时，要谨慎使用 `operator.add`。** 字符串拼接依赖写入顺序，多个并行节点同时写入时可读性和稳定性都不如“先收集列表，再由汇总节点统一排序和拼接”。对候选文档、标签、片段这类结果，优先用列表字段承接。
 - **State 字段不要无限膨胀。** 如果一个字段只是临时中间变量，而且后续节点根本不再用，不一定非要长期留在全局 State 里；否则图运行久了，状态会越来越难读。
 
 State 也不只是“一次 `invoke()` 里的临时变量”。后面学习 `checkpointer`、`thread_id`、状态历史、故障恢复时，你会看到 State 还承担着“可持久化工作流上下文”的角色：
@@ -490,6 +491,6 @@ Pregel 模型里还有一个很关键的词：**Superstep**。你可以先把它
 - **State = Schema + Reducer**：Schema 定义字段结构，Reducer 定义字段更新怎么和旧状态合并；把两者放在一起看，才是完整的 State 设计。
 - **`state_schema`、`input_schema`、`output_schema` 要分清楚**：内部完整状态是一回事，对外输入输出契约是另一回事。
 - **Reducer 选择要跟业务语义对齐**：默认覆盖适合最新值，`add_messages` 适合消息历史，`operator.add` 适合拼接/累加，自定义 Reducer 适合更复杂的合并规则。
-- 从掌握结果看，学完本章后，你至少应该：能说清 **Graph、State、Schema、Reducer** 四层关系，知道它们不是同一层东西；知道 `state_schema`、`input_schema`、`output_schema` 各自负责什么边界；能根据字段语义选择默认覆盖、`add_messages`、`operator.add` 或自定义 Reducer。
+- 学完本章后，你至少应该能说清 **Graph、State、Schema、Reducer** 四层关系，知道它们不是同一层东西；知道 `state_schema`、`input_schema`、`output_schema` 各自负责什么边界；能根据字段语义选择默认覆盖、`add_messages`、`operator.add` 或自定义 Reducer。
 
 **建议下一步：** 先按顺序跑一遍 `BuildWholeGraphSummary.py`、`DefState.py`、`StateSchema.py` 和 `03-state/reducers` 目录下所有 Reducer 案例，然后自己做两个小练习：把 `BuildWholeGraphSummary.py` 的 `process_data` 改成用 `operator.add` 追加历史记录；把 `StateReducersMyChatBot.py` 再加一个 `latest_summary` 字段，用默认覆盖保存最新摘要。做完后进入 [第 24 章 - LangGraph API：节点、边与进阶](24-LangGraphAPI：节点、边与进阶.md)，继续学习节点、普通边、条件边和 `Command` / `Send` / `Runtime`。

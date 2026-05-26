@@ -50,7 +50,7 @@
 
 ### 1.3 这不是训练模型
 
-这一点非常容易混淆，所以单独强调。
+这里容易混淆，所以单独强调。
 
 本章所说的记忆：
 
@@ -112,7 +112,7 @@
 
 [Memory_IDontKnow.py](案例与源码-2-LangChain框架/07-memory/Memory_IDontKnow.py ":include :type=code")
 
-这个案例非常重要，因为它能帮你建立一个正确直觉：**模型不是天然会记住多轮对话，是程序决定它能不能看见历史。**
+这个案例用来建立一个基础直觉：**模型不是天然会记住多轮对话，是程序决定它能不能看见历史。**
 
 ---
 
@@ -120,14 +120,14 @@
 
 ### 3.1 核心主线
 
-只要把本章的复杂名词先放一边，记忆的实现原理其实可以压缩成四步：
+先不急着看类名，记忆的实现过程可以拆成四步：
 
 1. **读历史**
 2. **把历史拼进当前提示**
 3. **调用模型**
 4. **把本轮输入和输出写回历史**
 
-这就是本章最核心的主线。
+这就是本章最核心的链路。
 
 ![记忆在链中的位置：读历史 → 拼入 Prompt → 调模型 → 写回历史](images/16/16-3-1-1.jpeg)
 
@@ -165,11 +165,13 @@
 
 不同的 `session_id`，通常对应不同的历史记录。
 
+在 `RunnableWithMessageHistory` 里，`session_id` 通常通过运行配置传入，例如 `config={"configurable": {"session_id": "user-001"}}`。不同的 `session_id` 会对应不同的历史对象。
+
 这也是为什么本章 Redis 版和多 session 版案例里，`session_id` 都很重要。如果没有这层区分，系统就可能把 A 用户的历史错拿给 B 用户。
 
 ### 3.5 本章和 LangGraph 官方主线的关系
 
-这里需要补一个很有价值的现实背景。
+这里需要补一个版本背景。
 
 在 LangChain / LangGraph 当前官方主线里，**短期记忆**越来越倾向于放在 **LangGraph persistence / checkpointer / thread** 这条体系里来讲。  
 也就是说，官方现在更强调：
@@ -179,31 +181,28 @@
 - 检查点（checkpointer）
 - 图执行状态
 
-但这并不意味着 `RunnableWithMessageHistory` 没价值了。相反：**它更直观**；**对 LCEL 链来说，它更容易理解**；**对“记忆本质是历史消息注入”这件事，它讲得最透明**。
+但这并不意味着 `RunnableWithMessageHistory` 没价值了。对 LCEL 链来说，它更直观，也更容易看清“历史消息如何注入到当前调用里”。
 
-所以本章采取的是一个非常适合教学的路线：
+所以本章采用这条学习顺序：
 
-- **先学 `RunnableWithMessageHistory + BaseChatMessageHistory`**
-- 同时让你知道官方更大主线已逐步转向 LangGraph persistence
+- 先用 `RunnableWithMessageHistory + BaseChatMessageHistory` 看清链级对话历史
+- 再知道复杂 Agent 的状态持久化会继续走向 LangGraph persistence
 
 > **版本说明：** 本章继续使用 `RunnableWithMessageHistory`，是为了把 LCEL 链里的“历史消息如何读写和注入”讲清楚。生产级 Agent 或复杂多轮状态管理，建议再对照 LangGraph 的 checkpointer、thread 和 persistence 机制来设计。
 
 这样后面你切到更复杂的 Agent / LangGraph，就不会断层。
 
-**补充：** 历史消息会占用模型上下文窗口；轮数过多时需要在工程上做截断、摘要或只保留最近 \(k\) 轮，否则可能触达 token 上限或成本上升——具体策略与产品需求相关，本章先建立“注入历史”的主线即可。
+**补充：** 历史消息会占用模型上下文窗口；轮数过多时需要做截断、摘要或只保留最近 \(k\) 轮，否则可能触达 token 上限或带来额外成本。本章先把“注入历史”这件事讲清楚，具体压缩策略后面按产品需求再选。
 
 ---
 
-## 4、实现类介绍：RunnableWithMessageHistory 与 BaseChatMessageHistory
+## 4、记忆相关实现类
 
-### 4.1 本章应抓哪条主线
+### 4.1 本章使用哪套写法
 
-如果你只想先知道本章“应该学哪条技术线”，先记这个结论：
+前面已经明确：本章先用 `RunnableWithMessageHistory + BaseChatMessageHistory` 讲清链级对话历史；复杂 Agent 的状态持久化，后续再放到 LangGraph 的 `thread / checkpointer / persistence` 里理解。
 
-- **课程案例主线**：`RunnableWithMessageHistory + BaseChatMessageHistory`
-- **官方当下更大的主线**：LangGraph short-term memory / persistence
-
-本章先把课程案例主线吃透最重要，因为它更容易帮助你理解“历史是怎么被读出来、注进去、再写回去的”。
+接下来先看几个相关类：哪些是早期写法，哪些适合作为本章重点。
 
 ### 4.2 ConversationChain（早期写法）
 
@@ -211,7 +210,7 @@ LangChain 早期有一个比较有代表性的类，叫 `ConversationChain`。
 
 它内置了对话模板和记忆机制，所以很适合快速做简单演示；但它的灵活性有限，也不太贴合 LCEL / Runnable 体系，面对复杂对话流程时扩展性会比较差。
 
-所以在今天的学习路径里，它已经不适合作为主线心智模型。
+所以在今天的学习路径里，它不再适合作为本章的主线写法。
 
 ### 4.3 RunnableWithMessageHistory（更合适的写法）
 
@@ -219,7 +218,7 @@ LangChain 早期有一个比较有代表性的类，叫 `ConversationChain`。
 
 它并不替代你的 Prompt、Model、Parser，而是站在它们外面，统一负责历史的读取、注入和写回。
 
-这和第 15 章讲的 LCEL 很契合，因为它不是另起一套风格，而是在 Runnable 体系之上继续工作。所以从教学角度说，它特别适合这一章，因为它把“记忆是外挂在链外的一层会话管理”这件事讲得很清楚。
+这和第 15 章讲的 LCEL 很契合，因为它不是另起一套风格，而是在 Runnable 体系之上继续工作。所以从教学角度说，它特别适合这一章，因为它能把“记忆是在链外单独管理的一层会话能力”讲清楚。
 
 ### 4.4 BaseChatMessageHistory（历史存储接口）
 
@@ -238,7 +237,7 @@ LangChain 早期有一个比较有代表性的类，叫 `ConversationChain`。
 
 LangChain 提供了多种聊天历史实现（如内存、文件、Redis、Elasticsearch、DynamoDB 等），核心差别主要在于**是否持久化、是否适合多实例共享**。
 
-常见实现可以这样理解：
+常见实现的区别主要看存储位置：
 
 | 组件名称                     | 存储方式     | 适合什么场景                   |
 | ---------------------------- | ------------ | ------------------------------ |
@@ -254,7 +253,7 @@ LangChain 提供了多种聊天历史实现（如内存、文件、Redis、Elast
 
 ### 4.6 本章案例结构对应关系
 
-可以按下面这条学习路径理解：
+下面按学习顺序列出本章案例文件：
 
 | 文件                                     | 作用                              |
 | ---------------------------------------- | --------------------------------- |
@@ -291,7 +290,7 @@ LangChain 提供了多种聊天历史实现（如内存、文件、Redis、Elast
 - 程序一停，历史就没了
 - 不适合多实例共享
 
-但正因为足够简单，它非常适合用来建立第一性理解。
+但正因为足够简单，它适合用来建立第一层理解。
 
 #### 5.1.1 最基础写法：RunnableWithMessageHistory
 
@@ -315,7 +314,7 @@ LangChain 提供了多种聊天历史实现（如内存、文件、Redis、Elast
 
 它用一个 `store` 字典按 `session_id` 存放不同的 `InMemoryChatMessageHistory`，本质上是在演示：
 
-**同一套链逻辑，如何根据不同会话编号切换到不同历史。**如果你后面要做 Web 聊天、客服系统、多人会话，这个思路非常重要。
+**同一套链逻辑，如何根据不同会话编号切换到不同历史。**如果你后面要做 Web 聊天、客服系统、多人会话，这个思路会反复用到。
 
 #### 5.1.3 直接操作 InMemoryChatMessageHistory
 
@@ -371,7 +370,7 @@ LangChain 提供了多种聊天历史实现（如内存、文件、Redis、Elast
 - **原生 Redis**：完全能跑本章主案例
 - **Redis Stack**：可以跑，而且更方便用 RedisInsight 可视化查看数据
 
-![Redis Stack 与原生 Redis 的关系](images/16/16-5-2-2-1.jpeg)
+![Redis Stack 与原生 Redis 的关系](images/16/16-5-2-1.jpeg)
 
 如果你是第一次学，可以直接把它们区分成这样：`Redis` 是高性能键值存储本体，`Redis Stack` 则是在 Redis 基础上补上更多增强能力，并带来更友好的工具链。
 
@@ -408,7 +407,7 @@ redis://localhost:6379
 docker run -d --name redis-stack -p 26379:6379 -p 8001:8001 redis/redis-stack
 ```
 
-这里要记住两个端口：
+这里要区分两个端口：
 
 - `26379`：本机访问 Redis 服务用（映射到容器内 `6379`）
 - `8001`：浏览器访问 RedisInsight 的常用映射端口
@@ -444,7 +443,7 @@ TYPE message_store:user-001
 LRANGE message_store:user-001 0 -1
 ```
 
-你看到的每个元素，本质上就是一条序列化后的消息记录。这能帮助你建立一个很重要的工程直觉：
+你看到的每个元素，本质上就是一条序列化后的消息记录。这里可以建立一个基础直觉：
 
 **对话历史并不神秘，落到 Redis 里，本质上就是按 session 管理的一组消息数据。**
 
@@ -459,7 +458,7 @@ LRANGE message_store:user-001 0 -1
 
 [RedisEnvCheck.py](案例与源码-2-LangChain框架/07-memory/RedisEnvCheck.py ":include :type=code")
 
-这个脚本非常适合作为“跑 Redis 案例前的第一步”，因为很多问题其实不是 LangChain 的问题，而是 Redis 环境本身没就绪。
+这个脚本建议作为“跑 Redis 案例前的第一步”，因为很多问题其实不是 LangChain 的问题，而是 Redis 环境本身没就绪。
 
 #### 5.2.6 案例：Redis 对话历史
 
@@ -491,7 +490,7 @@ LRANGE message_store:user-001 0 -1
 
 它最大的教学价值不是“换了一个全新方案”，而是：让你确认 Redis Stack 也能兼容跑本章历史存储；让你能用 RedisInsight 直观看到会话数据。
 
-![RedisInsight 中查看 LangChain 写入的会话：键 message_store:user-001 类型为 LIST，元素为序列化后的 human/ai 消息（JSON），便于对照代码理解持久化结构](images/16/16-5-2-7-1.png)
+![RedisInsight 中查看 LangChain 写入的会话：键 message_store:user-001 类型为 LIST，元素为序列化后的 human/ai 消息（JSON），便于对照代码理解持久化结构](images/16/16-5-2-2.png)
 
 所以这节更适合看作：**主案例的一个更方便观察数据的变体。**
 
@@ -517,10 +516,9 @@ LRANGE message_store:user-001 0 -1
 
 **本章小结：**
 
-- **本章的记忆是什么**：本章讲的主要是短期记忆 / 对话历史。它不是训练模型，也不是让模型参数更新，而是把历史消息保存在外部，并在下一轮调用前重新注入给模型。
-- **实现主线是什么**：记忆的本质可以概括成“读历史 → 拼入提示 → 调模型 → 写回历史”。`MessagesPlaceholder` 负责给历史消息留位置，`RunnableWithMessageHistory` 负责管理读写时机，`BaseChatMessageHistory` 及其实现类负责具体存储。
-- **内存版与 Redis 版怎么选**：`InMemoryChatMessageHistory` 适合单进程学习和演示，简单直观，但进程一停就丢；`RedisChatMessageHistory` 适合真实项目中的持久化、多实例共享和跨进程会话恢复。
-- **与官方主线的关系**：课程案例主线使用 `RunnableWithMessageHistory + BaseChatMessageHistory`，更适合入门理解；而 LangChain / LangGraph 当前官方更大的记忆主线，已经越来越强调 thread、persistence 和 checkpointer。
-- 从掌握结果看，学完本章后，你至少应该：明白本章的“记忆”本质上是**外部保存和回填历史消息**，不是训练模型、不是写入参数；能用“**读历史 → 拼入提示 → 调模型 → 写回历史**”概括记忆机制的完整主线；知道 `InMemoryChatMessageHistory` 和 `RedisChatMessageHistory` 分别适合什么场景，以及 `session_id` 为什么重要。
+- **记忆是什么**：这里讲的是短期记忆 / 对话历史，不是训练模型，也不是更新模型参数，而是把历史消息保存下来，并在下一轮调用前重新交给模型。
+- **基本流程**：读历史 → 拼入提示 → 调模型 → 写回历史。`MessagesPlaceholder` 负责给历史消息留位置，`RunnableWithMessageHistory` 负责管理读写时机，`BaseChatMessageHistory` 及其实现类负责具体存储。
+- **存储怎么选**：`InMemoryChatMessageHistory` 适合单进程学习和演示，进程一停就丢；`RedisChatMessageHistory` 适合持久化、多实例共享和跨进程会话恢复。
+- **版本关系**：本章用 `RunnableWithMessageHistory + BaseChatMessageHistory` 讲清链级记忆；复杂 Agent 的长期运行状态，后面再看 LangGraph 的 thread、persistence 和 checkpointer。
 
 **建议下一步：** 先把无记忆、内存版、多 session 版、Redis 版案例都跑一遍，重点观察“同一个 `session_id` 下历史是怎么被延续的”；然后继续学习 [第 17 章 Tools 工具调用](17-Tools工具调用.md)，你会更容易理解为什么 Agent 场景不仅需要工具，还需要会话状态与历史管理。

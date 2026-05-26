@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">LangChain 调用配置与运行时信息</title>
+  <desc id="desc">invoke 调用时业务输入与 config 分别进入模型对象，config 提供标签、元数据、回调、运行时切换和观测信息。</desc>
+  <rect width="1200" height="520" fill="#f8fafc"/>
+  <text x="600" y="54" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#0f172a">invoke 调用里有两类信息</text>
+  <text x="600" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#475569">业务输入给模型理解，config 给运行时管理、观测和切换使用</text>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2563eb"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <rect x="70" y="150" width="250" height="105" rx="18" fill="#ffffff" stroke="#bfdbfe" stroke-width="2"/>
+  <text x="195" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#1d4ed8">业务输入</text>
+  <text x="195" y="226" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#334155">messages / prompt / question</text>
+
+  <rect x="70" y="295" width="250" height="145" rx="18" fill="#ffffff" stroke="#bbf7d0" stroke-width="2"/>
+  <text x="195" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#15803d">config</text>
+  <text x="195" y="368" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#334155">tags / metadata</text>
+  <text x="195" y="396" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#334155">callbacks</text>
+  <text x="195" y="424" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#334155">configurable</text>
+
+  <rect x="455" y="188" width="290" height="178" rx="24" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="600" y="237" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#1e3a8a">Chat Model</text>
+  <text x="600" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#334155">invoke(input, config)</text>
+  <text x="600" y="316" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#475569">调用模型并保留运行信息</text>
+
+  <rect x="880" y="150" width="240" height="110" rx="18" fill="#fff1f2" stroke="#fecdd3" stroke-width="2"/>
+  <text x="1000" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#be123c">AIMessage</text>
+  <text x="1000" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#334155">content / usage / tool_calls</text>
+
+  <rect x="880" y="305" width="240" height="110" rx="18" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2"/>
+  <text x="1000" y="347" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#15803d">LangSmith / 日志</text>
+  <text x="1000" y="383" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#334155">按标签、元数据追踪调用</text>
+
+  <line x1="320" y1="202" x2="445" y2="245" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="320" y1="365" x2="445" y2="306" stroke="#16a34a" stroke-width="4" marker-end="url(#greenArrow)"/>
+  <line x1="745" y1="245" x2="870" y2="205" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="745" y1="320" x2="870" y2="360" stroke="#16a34a" stroke-width="4" marker-end="url(#greenArrow)"/>
+
+  <text x="365" y="178" font-family="Arial, sans-serif" font-size="15" fill="#1d4ed8">模型要看的内容</text>
+  <text x="360" y="405" font-family="Arial, sans-serif" font-size="15" fill="#15803d">运行时要看的信息</text>
+</svg>

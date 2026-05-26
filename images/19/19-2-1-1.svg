@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="820" viewBox="0 0 1180 820" role="img" aria-labelledby="title desc">
+  <title id="title">RAG 从检索到生成的完整数据流</title>
+  <desc id="desc">用户提问经文本嵌入模型转为查询向量，检索向量数据库得到相关文档片段，再与提示词模板一起交给 LLM 生成回答，最后由输出解析器返回给用户。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#475569"/>
+    </marker>
+    <style>
+      .bg { fill: #ffffff; }
+      .box { stroke-width: 2.2; rx: 8; }
+      .green { fill: #e8f5e9; stroke: #4f8f55; }
+      .blue { fill: #e3f7fb; stroke: #4c8792; }
+      .pink { fill: #fde8e8; stroke: #a56b6b; }
+      .db { fill: #ffffff; stroke: #64748b; stroke-width: 2; stroke-dasharray: 8 8; }
+      .title { font: 700 24px sans-serif; fill: #0f172a; }
+      .label { font: 700 22px sans-serif; fill: #334155; }
+      .small { font: 16px sans-serif; fill: #64748b; }
+      .caption { font: 16px sans-serif; fill: #475569; }
+      .line { stroke: #475569; stroke-width: 2.8; fill: none; marker-end: url(#arrow); }
+      .thin { stroke: #64748b; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1180" height="820"/>
+  <text class="title" x="60" y="54">RAG 从检索到生成的完整数据流</text>
+
+  <rect class="box green" x="60" y="110" width="140" height="70"/>
+  <text class="label" x="130" y="154" text-anchor="middle">用户</text>
+
+  <rect class="box pink" x="470" y="110" width="190" height="70"/>
+  <text class="label" x="565" y="154" text-anchor="middle">文本嵌入模型</text>
+
+  <rect class="box pink" x="760" y="110" width="230" height="70"/>
+  <text class="label" x="875" y="154" text-anchor="middle">提问文本向量数据</text>
+
+  <rect class="box pink" x="760" y="335" width="230" height="70"/>
+  <text class="label" x="875" y="378" text-anchor="middle">向量数据库检索器</text>
+
+  <rect class="db" x="760" y="515" width="230" height="275"/>
+  <text class="label" x="875" y="552" text-anchor="middle">向量数据库</text>
+  <rect class="box blue" x="815" y="595" width="120" height="58"/>
+  <text class="label" x="875" y="632" text-anchor="middle">向量1</text>
+  <rect class="box blue" x="815" y="680" width="120" height="58"/>
+  <text class="label" x="875" y="717" text-anchor="middle">向量2</text>
+  <text class="small" x="875" y="668" text-anchor="middle">......</text>
+  <text class="small" x="875" y="765" text-anchor="middle">向量 n</text>
+
+  <rect class="box pink" x="510" y="335" width="190" height="70"/>
+  <text class="label" x="605" y="363" text-anchor="middle">相关文档片段</text>
+  <text class="label" x="605" y="392" text-anchor="middle">内容</text>
+
+  <rect class="box blue" x="300" y="335" width="170" height="70"/>
+  <text class="label" x="385" y="378" text-anchor="middle">提示词模板</text>
+
+  <rect class="box blue" x="90" y="335" width="170" height="70"/>
+  <text class="label" x="175" y="378" text-anchor="middle">LLM大模型</text>
+
+  <rect class="box blue" x="60" y="245" width="170" height="70"/>
+  <text class="label" x="145" y="288" text-anchor="middle">输出解析器</text>
+
+  <path class="line" d="M200 145 H456"/>
+  <text class="caption" x="330" y="130" text-anchor="middle">提问：如何种植马铃薯？</text>
+  <path class="line" d="M660 145 H746"/>
+  <path class="line" d="M875 180 V320"/>
+  <path class="line" d="M875 405 V500"/>
+  <path class="thin" d="M875 515 V420"/>
+  <text class="caption" x="748" y="465" text-anchor="middle">相似性检索</text>
+  <text class="caption" x="1006" y="465" text-anchor="middle">关联文档片段信息</text>
+
+  <path class="line" d="M760 370 H714"/>
+  <path class="line" d="M510 370 H484"/>
+  <text class="caption" x="490" y="352" text-anchor="middle">渲染</text>
+  <path class="line" d="M300 370 H274"/>
+  <path class="line" d="M90 370 H70 C45 370 45 280 46 280 H60"/>
+  <path class="line" d="M145 245 V194"/>
+</svg>

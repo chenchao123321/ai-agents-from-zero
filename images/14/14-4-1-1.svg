@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">从文本解析到结构化输出再到 Pydantic 校验</title>
+  <desc id="desc">展示输出稳定性从普通文本、解析器、JSON、结构化输出到 Pydantic 校验逐步增强的路线。</desc>
+  <rect width="1200" height="520" fill="#f8fafc"/>
+  <text x="600" y="54" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#0f172a">模型输出越靠近业务动作，越需要更强约束</text>
+  <text x="600" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#475569">Parser、Structured Output、Pydantic 是逐步变严格的工程路线</text>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <g font-family="Arial, sans-serif">
+    <rect x="70" y="185" width="170" height="110" rx="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="155" y="228" text-anchor="middle" font-size="22" font-weight="700" fill="#334155">普通文本</text>
+    <text x="155" y="263" text-anchor="middle" font-size="15" fill="#64748b">适合展示</text>
+
+    <rect x="285" y="185" width="170" height="110" rx="18" fill="#eff6ff" stroke="#bfdbfe" stroke-width="2"/>
+    <text x="370" y="228" text-anchor="middle" font-size="22" font-weight="700" fill="#1d4ed8">Parser</text>
+    <text x="370" y="263" text-anchor="middle" font-size="15" fill="#64748b">转成可读结构</text>
+
+    <rect x="500" y="185" width="170" height="110" rx="18" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="2"/>
+    <text x="585" y="228" text-anchor="middle" font-size="22" font-weight="700" fill="#15803d">JSON</text>
+    <text x="585" y="263" text-anchor="middle" font-size="15" fill="#64748b">字段更稳定</text>
+
+    <rect x="715" y="185" width="185" height="110" rx="18" fill="#eef2ff" stroke="#c7d2fe" stroke-width="2"/>
+    <text x="807" y="228" text-anchor="middle" font-size="21" font-weight="700" fill="#4338ca">结构化输出</text>
+    <text x="807" y="263" text-anchor="middle" font-size="15" fill="#64748b">按 schema 生成</text>
+
+    <rect x="945" y="185" width="185" height="110" rx="18" fill="#fff1f2" stroke="#fecdd3" stroke-width="2"/>
+    <text x="1037" y="228" text-anchor="middle" font-size="22" font-weight="700" fill="#be123c">Pydantic</text>
+    <text x="1037" y="263" text-anchor="middle" font-size="15" fill="#64748b">类型与业务校验</text>
+  </g>
+
+  <line x1="240" y1="240" x2="275" y2="240" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="455" y1="240" x2="490" y2="240" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="670" y1="240" x2="705" y2="240" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="900" y1="240" x2="935" y2="240" stroke="#2563eb" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="115" y="360" width="970" height="58" rx="29" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="600" y="397" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#334155">越靠近数据库、接口、工具调用和自动流程，越不能只依赖自然语言约定</text>
+</svg>
